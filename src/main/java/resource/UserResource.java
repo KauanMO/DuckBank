@@ -2,6 +2,7 @@ package resource;
 
 import entity.dto.user.LoginDTO;
 import entity.dto.user.OutUserDTO;
+import entity.dto.user.RegisterUserDTO;
 import entity.model.Group;
 import entity.model.UserGroup;
 import io.smallrye.jwt.algorithm.SignatureAlgorithm;
@@ -35,10 +36,17 @@ public class UserResource {
     @Inject
     UserService service;
 
+    @POST
+    public Response registerUser(RegisterUserDTO dto) {
+        User newUser = service.registerUser(dto);
+
+        return Response.ok(new OutUserDTO(newUser)).build();
+    }
+
     @GET
     @Path("{name}")
 //    @RolesAllowed("admin")
-    public Response getUserByName(@Context SecurityContext ctx, @PathParam("name") String name) {
+    public Response getUserByName(@PathParam("name") String name) {
         System.out.println("teste");
 
         List<User> usersFound = service.getUsersByName(name);
@@ -47,8 +55,8 @@ public class UserResource {
     }
 
     @POST
-    @Path("login")
     @PermitAll
+    @Path("login")
     public Response loginUser(LoginDTO dto) {
         User userFound = service.findByCPF(dto.cpf());
 
