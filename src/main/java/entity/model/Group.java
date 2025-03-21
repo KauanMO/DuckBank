@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,7 +23,7 @@ public class Group {
     public LocalDate createdDate;
 
     @OneToMany(mappedBy = "group")
-    public List<UserGroup> groupUsers;
+    public List<UserGroup> groupUsers = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {

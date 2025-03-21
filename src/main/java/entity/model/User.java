@@ -2,14 +2,17 @@ package entity.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "app_user")
@@ -18,18 +21,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    public String firstName;
-    public String lastName;
-    public String password;
-    public LocalDate birthdate;
+    public Integer password;
     public String cpf;
-    public LocalDate createdDate;
+
+    @OneToOne
+    public Account account;
 
     @OneToMany(mappedBy = "user")
-    public List<UserGroup> userGroups;
-
-    @PrePersist
-    public void prePersist() {
-        setCreatedDate(LocalDate.now());
-    }
+    public List<UserGroup> userGroups = new ArrayList<>();
 }

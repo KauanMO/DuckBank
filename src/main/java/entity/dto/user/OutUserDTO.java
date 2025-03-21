@@ -15,10 +15,13 @@ public record OutUserDTO(
 ) {
     public OutUserDTO(User u) {
         this(u.getId(),
-                u.getFirstName() + " " + u.getLastName(),
-                u.getBirthdate(),
-                u.getCreatedDate(), u.getUserGroups()
+                String.format("%s %s %s", u.getAccount().getFirstName(), u.getAccount().getMiddleName(), u.getAccount().getLastName()),
+                u.getAccount().getBirthDate(),
+                u.getAccount().getCreatedDate(),
+                u.getUserGroups() != null
+                        ? u.getUserGroups()
                         .stream()
-                        .map(ug -> new OutGroupDTO(ug.getGroup())).toList());
+                        .map(ug -> new OutGroupDTO(ug.getGroup())).toList()
+                        : null);
     }
 }

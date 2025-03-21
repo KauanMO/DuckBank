@@ -7,25 +7,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_group")
-public class UserGroup {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @ManyToOne
-    public Group group;
-
-    @ManyToOne
-    public User user;
-
+    public String firstName;
+    public String middleName;
+    public String lastName;
+    public LocalDate birthDate;
     public LocalDate createdDate;
+
+    @OneToMany(mappedBy = "from")
+    public List<Transaction> sentTransactions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "to")
+    public List<Transaction> receivedTransactions = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
